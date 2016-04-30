@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gochiusearch.MonoMac", "Goc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gochiusearch.Mac", "Gochiusearch.Mac\Gochiusearch.Mac.csproj", "{4C3FD373-D3B6-4B20-BB94-5ABEB5273CF2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageSearchEngine.Portable", "ImageSearchEngine.Portable\ImageSearchEngine.Portable.csproj", "{5BBE0D10-E097-4C3D-9487-15F9E2058B66}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{F51BDC32-5553-4858-9B53-F7D3BCA46469}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F51BDC32-5553-4858-9B53-F7D3BCA46469}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F51BDC32-5553-4858-9B53-F7D3BCA46469}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BBE0D10-E097-4C3D-9487-15F9E2058B66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BBE0D10-E097-4C3D-9487-15F9E2058B66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BBE0D10-E097-4C3D-9487-15F9E2058B66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BBE0D10-E097-4C3D-9487-15F9E2058B66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

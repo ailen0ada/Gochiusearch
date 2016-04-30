@@ -1,16 +1,12 @@
 ﻿using System;
-using Foundation;
-using AppKit;
-using System.Linq;
-using System.Globalization;
-using System.Runtime.InteropServices;
-using System.Diagnostics;
-using System.Reflection;
-using System.IO;
-using Mpga.ImageSearchEngine;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Net;
+using AppKit;
+using Foundation;
+using Mpga.ImageSearchEngine;
 
 namespace Gochiusearch.Mac
 {
@@ -117,7 +113,6 @@ namespace Gochiusearch.Mac
             }
             SearchLevelSelector.Menu = levelMenu;
             SearchLevelSelector.SelectItem(3);
-
             TargetImageView.FileDropped += (sender, e) => FindImage(e.Payload.Path);
             TargetImageView.ImageUrlDropped += (sender, e) => FindImageByUrl(e.Payload.AbsoluteString);
         }
@@ -283,14 +278,14 @@ namespace Gochiusearch.Mac
                     second = second < 0 ? 0 : second;
                     var url = new NSUrl(storyInfo.Url + "?from=" + second);
 
-                    return new{summary = title + time + "付近",url};
+                    return new { summary = title + time + "付近", url };
                 })
                 .ToArray();
 
             foreach (var result in results)
             {
                 OutputLog(result.summary + Environment.NewLine);
-                OutputLog(result.url.AbsoluteString + Environment.NewLine, new NSStringAttributes{ LinkUrl = result.url });
+                OutputLog(result.url.AbsoluteString + Environment.NewLine, new NSStringAttributes { LinkUrl = result.url });
             }
             if (openNiconicoUrlOnSuccess)
             {
