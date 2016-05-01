@@ -69,7 +69,7 @@ namespace Mpga.ImageSearchEngine
             // http://www.hackerfactor.com/blog/?/archives/529-Kind-of-Like-That.html
 
             // 入力した画像を 9x8 の領域にスケールする
-            var data = GetSmallImageData(fileName, 9, 8);
+            var data = GetSmallImageData(GetImageData(fileName), 9, 8);
             // モノクロ化
             var mono = new int[data.Length / 4];
             for (var i = 0; i < mono.Length; i++)
@@ -92,7 +92,50 @@ namespace Mpga.ImageSearchEngine
             return result;
         }
 
-        protected abstract byte[] GetSmallImageData(string targetFile, int width, int height);
+        protected abstract Argb32DataWithSize GetImageData(string targetFile);
+
+        private byte[] GetSmallImageData(Argb32DataWithSize source, int width, int height)
+        {
+            // 等間隔にサンプリングして平均をとる
+            byte[] result = new byte[width * height * 4];
+            int s = 12; // s*s = サンプリング数
+            int pos = 0;
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    int srcX0 = x * source.Width / width;
+                    int srcY0 = y * source.Height / height;
+
+                    int r = 0;
+                    int g = 0;
+                    int b = 0;
+                    int a = 0;
+
+                    // 縮小した画素に対して縮小元から s * s 画素を取得し
+                    // 平均値を計算
+                    for (int yy = 0; yy < s; yy++)
+                    {
+                        for (int xx = 0; xx < s; xx++)
+                        {
+                            int dx = xx * source.Width / width / s;
+                            int dy = yy * source.Height / height / s;
+                            int p = ((srcX0 + dx) + (srcY0 + dy) * source.Width) * 4;
+                            b += source.Payload[p];
+                            g += source.Payload[p + 1];
+                            r += source.Payload[p + 2];
+                            a += source.Payload[p + 3];
+                        }
+                    }
+
+                    result[pos++] = (byte)(b / s / s);
+                    result[pos++] = (byte)(g / s / s);
+                    result[pos++] = (byte)(r / s / s);
+                    result[pos++] = (byte)(a / s / s);
+                }
+            }
+            return result;
+        }
 
         /// <summary>
         /// 類似画像を検索します

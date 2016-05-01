@@ -6,6 +6,7 @@ using CoreGraphics;
 using System.Linq;
 using CoreAnimation;
 using System.Security.Policy;
+using MobileCoreServices;
 
 namespace Gochiusearch.Mac
 {
@@ -29,12 +30,28 @@ namespace Gochiusearch.Mac
 
         public override void ViewDidMoveToSuperview()
         {
-            RegisterForDraggedTypes(new string[]{ NSPasteboard.NSFilenamesType, NSPasteboard.NSTiffType });
+            RegisterForDraggedTypes(new string[] { NSPasteboard.NSFilenamesType, NSPasteboard.NSTiffType });
         }
 
         public override NSDragOperation DraggingEntered(NSDraggingInfo sender)
         {
-            return NSDragOperation.Copy;
+            var item = sender.DraggingPasteboard.PasteboardItems.First();
+            NSUrl url;
+            if (item.Types.Any(x => x == "public.url"))
+            {
+                url = new NSUrl(item.GetStringForType("public.url"));
+            }
+            else if (item.Types.Any(x => x == "public.file-url"))
+            {
+                url = new NSUrl(item.GetStringForType("public.file-url"));
+
+            }
+            else {
+                return NSDragOperation.None;
+            }
+            return CanConformsToImageUTI(url)
+                             ? NSDragOperation.Link
+                                 : NSDragOperation.None;
         }
 
         public override bool PerformDragOperation(NSDraggingInfo sender)
@@ -56,6 +73,12 @@ namespace Gochiusearch.Mac
             }
             return true;
         }
+
+        private bool CanConformsToImageUTI(NSUrl url)
+        {
+            var uti = UTType.CreatePreferredIdentifier(UTType.TagClassFilenameExtension, url.PathExtension, null);
+            return UTType.ConformsTo(uti, UTType.Image);
+        }
     }
 
     public class DropEventArgs
@@ -65,7 +88,7 @@ namespace Gochiusearch.Mac
             Payload = url;
         }
 
-        public NSUrl Payload{ get; }
+        public NSUrl Payload { get; }
     }
 }
 

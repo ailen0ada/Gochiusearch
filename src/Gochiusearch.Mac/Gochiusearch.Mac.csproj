@@ -30,6 +30,8 @@
     <EnableCodeSigning>false</EnableCodeSigning>
     <EnablePackageSigning>false</EnablePackageSigning>
     <LangVersion>6</LangVersion>
+    <PackageSigningKey>Developer ID Installer</PackageSigningKey>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -49,6 +51,7 @@
     <LangVersion>6</LangVersion>
     <PackageSigningKey>Developer ID Installer</PackageSigningKey>
     <LinkMode>Full</LinkMode>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

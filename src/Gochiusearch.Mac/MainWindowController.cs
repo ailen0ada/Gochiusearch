@@ -251,14 +251,24 @@ namespace Gochiusearch.Mac
             ClearLog();
             OutputLog($"検索画像: {file}{Environment.NewLine}");
 
-            var sw = Stopwatch.StartNew();
-            var vector = imageSearch.GetVector(file);
+            ImageInfo[][] ret;
+            try
+            {
+                var sw = Stopwatch.StartNew();
 
-            var ret = imageSearch.GetSimilarImage(vector, searchLevel);
-            sw.Stop();
-            OutputLog($"検索時間: {sw.ElapsedMilliseconds} ms{Environment.NewLine}{Environment.NewLine}");
+                var vector = imageSearch.GetVector(file);
+                ret = imageSearch.GetSimilarImage(vector, searchLevel);
 
-            if (ret.Length < 1)
+                sw.Stop();
+                OutputLog($"検索時間: {sw.ElapsedMilliseconds} ms{Environment.NewLine}{Environment.NewLine}");
+
+                if (ret.Length < 1)
+                {
+                    OutputLog("見つかりませんでした。");
+                    return;
+                }
+            }
+            catch (InvalidOperationException)
             {
                 OutputLog("見つかりませんでした。");
                 return;
