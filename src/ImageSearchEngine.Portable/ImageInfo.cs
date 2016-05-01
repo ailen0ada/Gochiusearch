@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Mpga.ImageSearchEngine
@@ -6,8 +7,8 @@ namespace Mpga.ImageSearchEngine
     public struct ImageInfo
     {
         public ulong Hash;
-        public UInt16 TitleId;
-        public UInt16 EpisodeId;
-        public UInt32 Frame;
+        public ushort TitleId;
+        public ushort EpisodeId;
+        public uint Frame;
     }
 }
