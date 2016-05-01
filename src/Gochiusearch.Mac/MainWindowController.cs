@@ -168,7 +168,6 @@ namespace Gochiusearch.Mac
             }
             catch
             {
-                throw;
                 ShowAlertOnWindow("index.db is corrupted.", "Unable to load", NSAlertStyle.Critical);
                 NSApplication.SharedApplication.Terminate(this);
             }

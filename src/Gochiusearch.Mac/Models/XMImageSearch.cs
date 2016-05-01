@@ -10,16 +10,12 @@ namespace Gochiusearch.Mac
 {
     internal class XMImageSearch : ImageSearch
     {
-        public XMImageSearch()
-        {
-        }
-
         protected override byte[] GetSmallImageData(string targetFile, int width, int height)
         {
             using (var imgRep = NSImageRep.ImageRepFromFile(targetFile))
             using (var cgImage = imgRep.CGImage)
             using (var cs = CGColorSpace.CreateDeviceRGB())
-            using (var context = new CGBitmapContext(null, width, height, cgImage.BitsPerComponent, cgImage.BytesPerRow, cs, CGImageAlphaInfo.PremultipliedLast))
+            using (var context = new CGBitmapContext(null, width, height, 8, 4 * width, cs, CGImageAlphaInfo.PremultipliedFirst))
             {
                 var rect = new CGRect(0, 0, width, height);
                 context.DrawImage(rect, cgImage);
@@ -31,6 +27,7 @@ namespace Gochiusearch.Mac
                     var source = data.Bytes;
                     var bytes = new byte[data.Length];
                     Marshal.Copy(source, bytes, 0, bytes.Length);
+
                     return bytes;
                 }
             }
