@@ -43,11 +43,12 @@
     <UseSGen>true</UseSGen>
     <IncludeMonoRuntime>true</IncludeMonoRuntime>
     <CreatePackage>true</CreatePackage>
-    <CodeSigningKey>Developer ID Application</CodeSigningKey>
+    <CodeSigningKey>Mac Developer</CodeSigningKey>
     <EnableCodeSigning>true</EnableCodeSigning>
     <EnablePackageSigning>false</EnablePackageSigning>
     <LangVersion>6</LangVersion>
     <PackageSigningKey>Developer ID Installer</PackageSigningKey>
+    <LinkMode>Full</LinkMode>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
