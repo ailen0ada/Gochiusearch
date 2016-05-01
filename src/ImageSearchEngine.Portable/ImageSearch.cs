@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
+using PCLStorage;
 
 namespace Mpga.ImageSearchEngine
 {
@@ -22,7 +20,7 @@ namespace Mpga.ImageSearchEngine
 
         protected ImageSearch(string basePath)
         {
-            _basePath = Path.GetFullPath(basePath);
+            _basePath = basePath;
         }
 
         protected ImageSearch(ImageInfo[] info)
@@ -30,9 +28,12 @@ namespace Mpga.ImageSearchEngine
             _info = info;
         }
 
-        public ImageInfo[] LoadFromDb(string dbFileName)
+        public async Task<ImageInfo[]> LoadFromDbAsync(string dbFileName)
         {
-            using (var fs = new FileStream(dbFileName, FileMode.Open, FileAccess.Read))
+            var file = await FileSystem.Current.GetFileFromPathAsync(dbFileName).ConfigureAwait(false);
+            if (file == null)
+                throw new FileNotFoundException();
+            using (var fs = await file.OpenAsync(FileAccess.Read).ConfigureAwait(false))
             using (var gz = new GZipStream(fs, CompressionMode.Decompress))
             using (var br = new BinaryReader(gz))
             {
@@ -262,21 +263,7 @@ namespace Mpga.ImageSearchEngine
         /// <param name="vector">画像ベクトル</param>
         /// <returns>同じ画像ベクトルを持つ画像群</returns>
         public ImageInfo[] GetImageInfo(ulong vector) => _info.Where(x => x.Hash == vector).ToArray();
-
-        /// <summary>
-        /// 指定した画像ファイルを画像のハッシュ値に相当するフォルダにコピーします
-        /// </summary>
-        /// <param name="target">画像ファイルのパス</param>
-        /// <returns>格納先パス</returns>
-        public string AddImage(string target)
-        {
-            var path = GetImageDirectory(target);
-            Directory.CreateDirectory(path);
-            var result = Path.Combine(path, Path.GetFileName(target));
-            File.Copy(target, result, true);
-            return result;
-        }
-
+        
         /// <summary>
         /// ハッシュ値からフォルダ名を返します
         /// </summary>
