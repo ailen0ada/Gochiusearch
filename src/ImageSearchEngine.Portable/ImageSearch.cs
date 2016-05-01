@@ -262,7 +262,54 @@ namespace Mpga.ImageSearchEngine
         /// </summary>
         /// <param name="vector">画像ベクトル</param>
         /// <returns>同じ画像ベクトルを持つ画像群</returns>
-        public ImageInfo[] GetImageInfo(ulong vector) => _info.Where(x => x.Hash == vector).ToArray();
+        public ImageInfo[] GetImageInfo(ulong vector)
+        {
+            int min = 0;
+            int max = _info.Length - 1;
+            int mid;
+            int p = 0;
+            bool found = false;
+            while (min <= max)
+            {
+                mid = min + (max - min) / 2;
+                if (_info[mid].Hash == vector)
+                {
+                    p = mid;
+                    found = true;
+                    break;
+                }
+                else if (_info[mid].Hash < vector)
+                {
+                    min = mid + 1;
+                }
+                else if (_info[mid].Hash > vector)
+                {
+                    max = mid - 1;
+                }
+            }
+            // 見つからなければ空の配列を返す
+            if (!found)
+            {
+                return new ImageInfo[] { };
+            }
+            // 見つかったら同じvectorを持つ画像情報をすべて返す
+            // (_info内は Hash をキーにしてソート済み)
+            min = max = p;
+            while (min >= 0 && _info[min].Hash == vector)
+            {
+                min--;
+            }
+            while (max < _info.Length && _info[max].Hash == vector)
+            {
+                max++;
+            }
+            ImageInfo[] result = new ImageInfo[max - min - 1];
+            for (int i = min + 1; i < max; i++)
+            {
+                result[i - min - 1] = _info[i];
+            }
+            return result;
+        }
 
         /// <summary>
         /// ハッシュ値からフォルダ名を返します
@@ -270,11 +317,6 @@ namespace Mpga.ImageSearchEngine
         /// <param name="vec">画像のハッシュ値</param>
         /// <returns>ハッシュ値に相当するフォルダ</returns>
         public string GetImageDirectory(ulong vec) => Path.Combine(_basePath, GetPathFromHash(vec));
-
-        public string GetImageDirectory(string target)
-        {
-            return null;
-        }
 
         /// <summary>
         /// ハッシュ値からパス名を返します
