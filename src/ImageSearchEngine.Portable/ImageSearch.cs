@@ -67,11 +67,11 @@ namespace Mpga.ImageSearchEngine
         {
             // dHash (difference hash) を計算
             // http://www.hackerfactor.com/blog/?/archives/529-Kind-of-Like-That.html
-            
+
             // 入力した画像を 9x8 の領域にスケールする
             var data = GetSmallImageData(fileName, 9, 8);
             // モノクロ化
-            var mono = new int[data.Length/4];
+            var mono = new int[data.Length / 4];
             for (var i = 0; i < mono.Length; i++)
             {
                 mono[i] = 29 * data[i * 4] + 150 * data[i * 4 + 1] + 77 * data[i * 4 + 2];
@@ -92,7 +92,7 @@ namespace Mpga.ImageSearchEngine
             return result;
         }
 
-        internal abstract byte[] GetSmallImageData(string targetFile, int width, int height);
+        protected abstract byte[] GetSmallImageData(string targetFile, int width, int height);
 
         /// <summary>
         /// 類似画像を検索します
@@ -228,7 +228,7 @@ namespace Mpga.ImageSearchEngine
         {
             if (log.Count == 0)
                 return new ImageInfo[0][];
-            
+
             // 作品名ID,話数ID,フレーム番号の順でソート
             var group = from c in log
                         orderby c.TitleId, c.EpisodeId, c.Frame
@@ -263,7 +263,7 @@ namespace Mpga.ImageSearchEngine
         /// <param name="vector">画像ベクトル</param>
         /// <returns>同じ画像ベクトルを持つ画像群</returns>
         public ImageInfo[] GetImageInfo(ulong vector) => _info.Where(x => x.Hash == vector).ToArray();
-        
+
         /// <summary>
         /// ハッシュ値からフォルダ名を返します
         /// </summary>
@@ -286,7 +286,7 @@ namespace Mpga.ImageSearchEngine
             var bits = new int[8];
             for (var i = bits.Length - 1; i >= 0; i--)
             {
-                bits[i] = (int) (vec & 0xFF);
+                bits[i] = (int)(vec & 0xFF);
                 vec >>= 8;
             }
             return string.Join("\\", bits.Select(x => $"{x:X2}"));

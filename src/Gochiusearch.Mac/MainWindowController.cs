@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using AppKit;
 using Foundation;
 using Mpga.ImageSearchEngine;
@@ -84,13 +85,13 @@ namespace Gochiusearch.Mac
             stor.EndEditing();
         }
 
-        public override void WindowDidLoad()
+        public override async void WindowDidLoad()
         {
             base.WindowDidLoad();
 
             InitializeUserInterfaces();
 
-            LoadImageInfo();
+            await LoadImageInfoAsync();
             LoadStoryInfo();
         }
 
@@ -151,7 +152,7 @@ namespace Gochiusearch.Mac
         /// <summary>
         /// Loads the image information from index.db.
         /// </summary>
-        private void LoadImageInfo()
+        private async Task LoadImageInfoAsync()
         {
             var fn = NSBundle.MainBundle.PathForResource("index", "db");
             if (!File.Exists(fn))
@@ -162,11 +163,12 @@ namespace Gochiusearch.Mac
 
             try
             {
-                imageSearch = new ImageSearch();
-                imageSearch.LoadFromDb(fn);
+                imageSearch = new XMImageSearch();
+                await imageSearch.LoadFromDbAsync(fn);
             }
             catch
             {
+                throw;
                 ShowAlertOnWindow("index.db is corrupted.", "Unable to load", NSAlertStyle.Critical);
                 NSApplication.SharedApplication.Terminate(this);
             }
