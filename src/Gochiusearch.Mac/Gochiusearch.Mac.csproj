@@ -134,6 +134,7 @@
     <BundleResource Include="Resources\en.lproj\MainWindow.strings" />
     <BundleResource Include="Resources\ja.lproj\MainMenu.strings" />
     <BundleResource Include="Resources\ja.lproj\MainWindow.strings" />
+    <BundleResource Include="Resources\Base.lproj\Credits.rtf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\" />
