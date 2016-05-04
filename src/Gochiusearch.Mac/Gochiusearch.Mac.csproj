@@ -104,8 +104,8 @@
     <Compile Include="Models\NativeMethods.cs" />
   </ItemGroup>
   <ItemGroup>
-    <InterfaceDefinition Include="MainMenu.xib" />
-    <InterfaceDefinition Include="MainWindow.xib" />
+    <InterfaceDefinition Include="Resources\Base.lproj\MainMenu.xib" />
+    <InterfaceDefinition Include="Resources\Base.lproj\MainWindow.xib" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <ItemGroup>
@@ -127,9 +127,17 @@
       <Link>Resources\index.txt</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </BundleResource>
+    <BundleResource Include="Resources\en.lproj\Localizable.strings" />
+    <BundleResource Include="Resources\ja.lproj\Localizable.strings" />
+    <BundleResource Include="Resources\Base.lproj\Localizable.strings" />
+    <BundleResource Include="Resources\en.lproj\MainMenu.strings" />
+    <BundleResource Include="Resources\en.lproj\MainWindow.strings" />
+    <BundleResource Include="Resources\ja.lproj\MainMenu.strings" />
+    <BundleResource Include="Resources\ja.lproj\MainWindow.strings" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\" />
     <Folder Include="Models\" />
+    <Folder Include="Resources\Base.lproj\" />
   </ItemGroup>
 </Project>

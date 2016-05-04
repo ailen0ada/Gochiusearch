@@ -34,5 +34,10 @@ namespace Gochiusearch.Mac
             }
             return true;
         }
+
+        partial void NavigateToGithub(NSObject sender)
+        {
+            NSWorkspace.SharedWorkspace.OpenUrl(new NSUrl("https://github.com/ksasao/Gochiusearch"));
+        }
     }
 }
