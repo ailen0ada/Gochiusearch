@@ -7,13 +7,17 @@ namespace Gochiusearch.Mac
     {
         MainWindowController mainWindowController;
 
+        NSString containerDirectory;
+
         public AppDelegate()
         {
+            containerDirectory = NativeMethods.ContainerDirectory.AppendPathComponent(new NSString(".browser"));
         }
 
         public override void DidFinishLaunching(NSNotification notification)
         {
-            mainWindowController = new MainWindowController();
+            System.IO.Directory.CreateDirectory(containerDirectory);
+            mainWindowController = new MainWindowController(containerDirectory);
             mainWindowController.Window.MakeKeyAndOrderFront(this);
         }
 
@@ -21,9 +25,7 @@ namespace Gochiusearch.Mac
         {
             // Insert code here to tear down your application
             // Clear caches
-            var d = NativeMethods.ContainerDirectory;
-            foreach (var f in System.IO.Directory.EnumerateFiles(d, "*", System.IO.SearchOption.TopDirectoryOnly))
-                System.IO.File.Delete(f);
+            System.IO.Directory.Delete(containerDirectory, true);
         }
 
         public override bool ApplicationShouldHandleReopen(NSApplication sender, bool hasVisibleWindows)

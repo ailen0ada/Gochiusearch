@@ -26,9 +26,10 @@ namespace Gochiusearch.Mac
         {
         }
 
-        public MainWindowController()
+        public MainWindowController(NSString containerDirectory)
             : base("MainWindow")
         {
+            tempDirectory = containerDirectory;
         }
 
         public override void AwakeFromNib()
@@ -86,6 +87,8 @@ namespace Gochiusearch.Mac
             stor.Append(textToAdd);
             stor.EndEditing();
         }
+
+        private readonly NSString tempDirectory;
 
         public override async void WindowDidLoad()
         {
@@ -226,7 +229,7 @@ namespace Gochiusearch.Mac
 
         private void FindImageByUrl(NSString url)
         {
-            var fn = NativeMethods.ContainerDirectory.AppendPathComponent(url.LastPathComponent);
+            var fn = tempDirectory.AppendPathComponent(url.LastPathComponent);
             // Replacing host to punycode to handle multi-byte domain
             var r = new Regex(Regex.Escape(url.PathComponents[1]));
             var punycoded = new IdnMapping().GetAscii(url.PathComponents[1]);
