@@ -27,11 +27,13 @@
     <IncludeMonoRuntime>false</IncludeMonoRuntime>
     <CreatePackage>false</CreatePackage>
     <CodeSigningKey>Mac Developer</CodeSigningKey>
-    <EnableCodeSigning>false</EnableCodeSigning>
+    <EnableCodeSigning>true</EnableCodeSigning>
     <EnablePackageSigning>false</EnablePackageSigning>
     <LangVersion>6</LangVersion>
     <PackageSigningKey>Developer ID Installer</PackageSigningKey>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CodeSignProvision>Automatic</CodeSignProvision>
+    <CodeSignEntitlements>Entitlements.plist</CodeSignEntitlements>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -63,6 +65,7 @@
     <Reference Include="PCLStorage.Abstractions">
       <HintPath>..\packages\PCLStorage.1.0.2\lib\portable-Xamarin.iOS+Xamarin.Mac\PCLStorage.Abstractions.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json" />
@@ -80,6 +83,7 @@
   <ItemGroup>
     <None Include="Info.plist" />
     <None Include="packages.config" />
+    <None Include="Entitlements.plist" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -97,6 +101,7 @@
     </Compile>
     <Compile Include="Views\AcceptDropImageView.cs" />
     <Compile Include="Models\XMImageSearch.cs" />
+    <Compile Include="Models\NativeMethods.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainMenu.xib" />

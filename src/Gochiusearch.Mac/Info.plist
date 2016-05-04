@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleName</key>
-	<string>Gochiusearch.Mac</string>
+	<string>Gochiusearch</string>
 	<key>CFBundleIdentifier</key>
-	<string>jp.mpga.gochiusearch-mac</string>
+	<string>jp.ailen0ada.Gochiusearch</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
@@ -29,5 +29,7 @@ Licensed under the Apache License, Version 2.0</string>
 	<string>MainMenu</string>
 	<key>XSAppIconAssets</key>
 	<string>Resources/Images.xcassets/AppIcons.appiconset</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.entertainment</string>
 </dict>
 </plist>
