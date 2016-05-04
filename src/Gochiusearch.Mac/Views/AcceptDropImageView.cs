@@ -34,11 +34,6 @@ namespace Gochiusearch.Mac
         {
             var item = sender.DraggingPasteboard.PasteboardItems.First();
 
-            foreach (var t in item.Types)
-            {
-                System.Diagnostics.Debug.WriteLine($"{t} : {item.GetStringForType(t)}");
-            }
-
             NSString url;
             if (item.Types.Any(x => x == "public.url"))
             {

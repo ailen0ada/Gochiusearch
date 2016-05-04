@@ -95,6 +95,8 @@ namespace Gochiusearch.Mac
 
             await LoadImageInfoAsync();
             LoadStoryInfo();
+
+            OutputLog(NSBundle.MainBundle.LocalizedString("MessageStart", "required"));
         }
 
         private void InitializeUserInterfaces()
@@ -159,7 +161,10 @@ namespace Gochiusearch.Mac
             var fn = NSBundle.MainBundle.PathForResource("index", "db");
             if (!File.Exists(fn))
             {
-                ShowAlertOnWindow("index.db was not found.", "Unable to load", NSAlertStyle.Critical);
+                ShowAlertOnWindow(
+                    $"index.db {NSBundle.MainBundle.LocalizedString("ErrorNotFound", "optional")}",
+                    NSBundle.MainBundle.LocalizedString("LoadFailed", "optional"),
+                    NSAlertStyle.Critical);
                 NSApplication.SharedApplication.Terminate(this);
             }
 
@@ -170,7 +175,10 @@ namespace Gochiusearch.Mac
             }
             catch
             {
-                ShowAlertOnWindow("index.db is corrupted.", "Unable to load", NSAlertStyle.Critical);
+                ShowAlertOnWindow(
+                    $"index.db {NSBundle.MainBundle.LocalizedString("ErrorCorrupted", "optional")}",
+                    NSBundle.MainBundle.LocalizedString("LoadFailed", "optional"),
+                    NSAlertStyle.Critical);
                 NSApplication.SharedApplication.Terminate(this);
             }
         }
@@ -183,7 +191,10 @@ namespace Gochiusearch.Mac
             var fn = NSBundle.MainBundle.PathForResource("index", "txt");
             if (!File.Exists(fn))
             {
-                ShowAlertOnWindow("index.txt was not found.", "Unable to load", NSAlertStyle.Critical);
+                ShowAlertOnWindow(
+                    $"index.txt {NSBundle.MainBundle.LocalizedString("ErrorNotFound", "optional")}",
+                    NSBundle.MainBundle.LocalizedString("LoadFailed", "optional"),
+                    NSAlertStyle.Critical);
                 NSApplication.SharedApplication.Terminate(this);
             }
 
@@ -205,7 +216,10 @@ namespace Gochiusearch.Mac
             }
             catch
             {
-                ShowAlertOnWindow("index.txt is corrupted.", "Unable to load", NSAlertStyle.Critical);
+                ShowAlertOnWindow(
+                    $"index.txt {NSBundle.MainBundle.LocalizedString("ErrorCorrupted", "optional")}",
+                    NSBundle.MainBundle.LocalizedString("LoadFailed", "optional"),
+                    NSAlertStyle.Critical);
                 NSApplication.SharedApplication.Terminate(this);
             }
         }
@@ -246,7 +260,7 @@ namespace Gochiusearch.Mac
         {
             lastUri = file;
             ClearLog();
-            OutputLog($"検索画像: {file}{Environment.NewLine}");
+            OutputLog($"{NSBundle.MainBundle.LocalizedString("TargetImage", "required")}: {file}{Environment.NewLine}");
 
             ImageInfo[][] ret;
             try
@@ -257,17 +271,17 @@ namespace Gochiusearch.Mac
                 ret = imageSearch.GetSimilarImage(vector, searchLevel);
 
                 sw.Stop();
-                OutputLog($"検索時間: {sw.ElapsedMilliseconds} ms{Environment.NewLine}{Environment.NewLine}");
+                OutputLog($"{NSBundle.MainBundle.LocalizedString("TimeElapsed", "required")}: {sw.ElapsedMilliseconds} ms{Environment.NewLine}{Environment.NewLine}");
 
                 if (ret.Length < 1)
                 {
-                    OutputLog("見つかりませんでした。");
+                    OutputLog(NSBundle.MainBundle.LocalizedString("NotFound", "required"));
                     return;
                 }
             }
             catch (InvalidOperationException)
             {
-                OutputLog("見つかりませんでした。");
+                OutputLog(NSBundle.MainBundle.LocalizedString("NotFound", "required"));
                 return;
             }
 
@@ -286,7 +300,7 @@ namespace Gochiusearch.Mac
                     second = second < 0 ? 0 : second;
                     var url = new NSUrl(storyInfo.Url + "?from=" + second);
 
-                    return new { summary = title + time + "付近", url };
+                    return new { summary = title + time + NSBundle.MainBundle.LocalizedString("OrNear", "required"), url };
                 })
                 .ToArray();
 
