@@ -31,12 +31,12 @@
     <EnablePackageSigning>false</EnablePackageSigning>
     <LangVersion>6</LangVersion>
     <PackageSigningKey>Developer ID Installer</PackageSigningKey>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <CodeSignProvision>Automatic</CodeSignProvision>
     <CodeSignEntitlements>Entitlements.plist</CodeSignEntitlements>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>full</DebugType>
+    <DebugType></DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
@@ -47,13 +47,39 @@
     <UseSGen>true</UseSGen>
     <IncludeMonoRuntime>true</IncludeMonoRuntime>
     <CreatePackage>true</CreatePackage>
-    <CodeSigningKey>Mac Developer</CodeSigningKey>
+    <CodeSigningKey>Developer ID Application</CodeSigningKey>
     <EnableCodeSigning>true</EnableCodeSigning>
-    <EnablePackageSigning>false</EnablePackageSigning>
+    <EnablePackageSigning>true</EnablePackageSigning>
     <LangVersion>6</LangVersion>
     <PackageSigningKey>Developer ID Installer</PackageSigningKey>
     <LinkMode>Full</LinkMode>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <CodeSignProvision></CodeSignProvision>
+    <CodeSignEntitlements>Entitlements.plist</CodeSignEntitlements>
+    <I18n>cjk</I18n>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\AppStore</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <Profiling>false</Profiling>
+    <UseRefCounting>true</UseRefCounting>
+    <UseSGen>true</UseSGen>
+    <IncludeMonoRuntime>true</IncludeMonoRuntime>
+    <CreatePackage>true</CreatePackage>
+    <CodeSigningKey>3rd Party Mac Developer Application: Tsubasa HIRANO (VV35DG2GRZ)</CodeSigningKey>
+    <EnableCodeSigning>true</EnableCodeSigning>
+    <EnablePackageSigning>true</EnablePackageSigning>
+    <LangVersion>6</LangVersion>
+    <PackageSigningKey>3rd Party Mac Developer Installer: Tsubasa HIRANO (VV35DG2GRZ)</PackageSigningKey>
+    <LinkMode>Full</LinkMode>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <CodeSignProvision>7448c130-d946-41f3-8df2-79211d1976da</CodeSignProvision>
+    <CodeSignEntitlements>Entitlements.plist</CodeSignEntitlements>
+    <I18n>cjk</I18n>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
