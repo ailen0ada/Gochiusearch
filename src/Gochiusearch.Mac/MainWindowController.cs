@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using AppKit;
 using Foundation;
 using Mpga.ImageSearchEngine;
+using System.Net;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace Gochiusearch.Mac
 {
@@ -114,8 +116,8 @@ namespace Gochiusearch.Mac
             }
             SearchLevelSelector.Menu = levelMenu;
             SearchLevelSelector.SelectItem(3);
-            TargetImageView.FileDropped += (sender, e) => FindImage(e.Payload.Path);
-            TargetImageView.ImageUrlDropped += (sender, e) => FindImageByUrl(e.Payload.AbsoluteString);
+            TargetImageView.FileDropped += (sender, e) => FindImage(e.Payload);
+            TargetImageView.ImageUrlDropped += (sender, e) => FindImageByUrl(e.Payload);
         }
 
         /// <summary>
@@ -125,7 +127,7 @@ namespace Gochiusearch.Mac
         private int searchLevel;
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="Gochiusearch.Mac.MainWindowController"/> open
+        /// Gets or sets a value indicating whether this <see cref="MainWindowController"/> open
         /// niconico URL on finished searching successfully.
         /// </summary>
         /// <value><c>true</c> if open niconico URL on success; otherwise, <c>false</c>.</value>
@@ -208,16 +210,19 @@ namespace Gochiusearch.Mac
             }
         }
 
-        private void FindImageByUrl(string url)
+        private void FindImageByUrl(NSString url)
         {
-            if (!IsImage(url))
-                return;
-            var fn = Path.Combine(NSBundle.MainBundle.ResourcePath, "Browser");
+            var fn = NativeMethods.ContainerDirectory.AppendPathComponent(url.LastPathComponent);
+            // Replacing host to punycode to handle multi-byte domain
+            var r = new Regex(Regex.Escape(url.PathComponents[1]));
+            var punycoded = new IdnMapping().GetAscii(url.PathComponents[1]);
+            var replacedUrl = r.Replace(url, punycoded, 1);
+
             try
             {
-                using (var wc = new WebClient())
+                using (var client = new WebClient())
                 {
-                    wc.DownloadFile(url, fn);
+                    client.DownloadFile(replacedUrl, fn);
                 }
             }
             catch
@@ -226,14 +231,6 @@ namespace Gochiusearch.Mac
                 return;
             }
             FindImage(fn);
-        }
-
-        private static string[] imageExts = { "jpg", "jpeg", "gif", "png", "bmp" };
-
-        private static bool IsImage(string url)
-        {
-            url = url.ToLower();
-            return imageExts.Any(url.EndsWith);
         }
 
         /// <summary>

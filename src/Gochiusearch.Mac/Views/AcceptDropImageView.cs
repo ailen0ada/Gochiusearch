@@ -1,11 +1,8 @@
 ﻿using System;
 using AppKit;
 using Foundation;
-using System.Diagnostics;
 using CoreGraphics;
 using System.Linq;
-using CoreAnimation;
-using System.Security.Policy;
 using MobileCoreServices;
 
 namespace Gochiusearch.Mac
@@ -36,21 +33,26 @@ namespace Gochiusearch.Mac
         public override NSDragOperation DraggingEntered(NSDraggingInfo sender)
         {
             var item = sender.DraggingPasteboard.PasteboardItems.First();
-            NSUrl url;
+
+            foreach (var t in item.Types)
+            {
+                System.Diagnostics.Debug.WriteLine($"{t} : {item.GetStringForType(t)}");
+            }
+
+            NSString url;
             if (item.Types.Any(x => x == "public.url"))
             {
-                url = new NSUrl(item.GetStringForType("public.url"));
+                url = new NSString(item.GetStringForType("public.url"));
             }
             else if (item.Types.Any(x => x == "public.file-url"))
             {
-                url = new NSUrl(item.GetStringForType("public.file-url"));
-
+                url = new NSString(new NSUrl(item.GetStringForType("public.file-url")).Path);
             }
             else {
                 return NSDragOperation.None;
             }
             return CanConformsToImageUTI(url)
-                             ? NSDragOperation.Link
+                             ? NSDragOperation.Copy
                                  : NSDragOperation.None;
         }
 
@@ -59,12 +61,12 @@ namespace Gochiusearch.Mac
             var item = sender.DraggingPasteboard.PasteboardItems.First();
             if (item.Types.Any(x => x == "public.url"))
             {
-                var url = new NSUrl(item.GetStringForType("public.url"));
+                var url = new NSString(item.GetStringForType("public.url"));
                 ImageUrlDropped?.Invoke(this, new DropEventArgs(url));
             }
             else if (item.Types.Any(x => x == "public.file-url"))
             {
-                var url = new NSUrl(item.GetStringForType("public.file-url"));
+                var url = new NSString(new NSUrl(item.GetStringForType("public.file-url")).Path);
                 FileDropped?.Invoke(this, new DropEventArgs(url));
             }
             else
@@ -74,7 +76,7 @@ namespace Gochiusearch.Mac
             return true;
         }
 
-        private bool CanConformsToImageUTI(NSUrl url)
+        private bool CanConformsToImageUTI(NSString url)
         {
             var uti = UTType.CreatePreferredIdentifier(UTType.TagClassFilenameExtension, url.PathExtension, null);
             return UTType.ConformsTo(uti, UTType.Image);
@@ -83,12 +85,12 @@ namespace Gochiusearch.Mac
 
     public class DropEventArgs
     {
-        public DropEventArgs(NSUrl url)
+        public DropEventArgs(NSString url)
         {
             Payload = url;
         }
 
-        public NSUrl Payload { get; }
+        public NSString Payload { get; }
     }
 }
 
