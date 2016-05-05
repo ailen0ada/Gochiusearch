@@ -28,14 +28,7 @@ namespace Gochiusearch.Mac
             System.IO.Directory.Delete(containerDirectory, true);
         }
 
-        public override bool ApplicationShouldHandleReopen(NSApplication sender, bool hasVisibleWindows)
-        {
-            if (!hasVisibleWindows)
-            {
-                mainWindowController.Window.MakeKeyAndOrderFront(this);
-            }
-            return true;
-        }
+        public override bool ApplicationShouldTerminateAfterLastWindowClosed(NSApplication sender) => true;
 
         partial void NavigateToGithub(NSObject sender)
         {
