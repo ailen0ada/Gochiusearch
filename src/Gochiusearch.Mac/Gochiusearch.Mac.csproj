@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Gochiusearch.Mac</RootNamespace>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
-    <AssemblyName>Gochiusearch.Mac</AssemblyName>
+    <AssemblyName>Gochiusearch</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
   </PropertyGroup>
